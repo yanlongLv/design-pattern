@@ -3,7 +3,7 @@ package factorymethod
 type Operator interface {
 	SetA(int)
 	SetB(int)
-	Result()int
+	Result() int
 }
 
 type OperatorBase struct {
@@ -28,11 +28,11 @@ type OperatorFactory interface {
 type PlusOperatorFactory struct{}
 
 func (p PlusOperator) Result() int {
-	return p.a + p.b 
+	return p.a + p.b
 }
 
-func (PlusOperatorFactory)Create()Operator{
+func (PlusOperatorFactory) Create() Operator {
 	return &PlusOperator{
-		OperatorBase:&OperatorBase{}
+		OperatorBase: &OperatorBase{},
 	}
 }
