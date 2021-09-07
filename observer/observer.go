@@ -2,46 +2,47 @@ package observer
 
 import "fmt"
 
+type ISubject interface {
+	Register(observer IObserver)
+	Remove(observer IObserver)
+	Notify(msg string)
+}
+
+
+type IObserver interface {
+	Update(m string)
+}
+
 type Subject struct {
-	observers []Observer
-	context   string
+	observers []IObserver
 }
 
-func NewSubject() *Subject {
-	return &Subject{
-		observers: make([]Observer, 0),
+func (s *Subject) Register(observer IObserver) {
+	s.observers = append(s.observers, observer)
+}
+
+func (s *Subject) Remove(observer IObserver) {
+	for i,ob:=range s.observers {
+		if ob == observer {
+			s.observers = append(s.observers[:i],s.observers[i+1:]...)
+		}
 	}
 }
 
-func (s *Subject) Attach(o Observer) {
-	s.observers = append(s.observers, o)
-}
-
-func (s *Subject) notify() {
-	for _, o := range s.observers {
-		o.Update(s)
+func (s *Subject) Notify(smg string) {
+	for _,o:=range s.observers {
+		o.Update(smg)
 	}
 }
 
-func (s *Subject) UpdateContext(context string) {
-	s.context = context
-	s.notify()
+type IObserver1 struct {}
+
+type IObserver2 struct {}
+
+func (o *IObserver1) Update(msg string){
+	fmt.Printf("Observice1")
 }
 
-type Observer interface {
-	Update(*Subject)
-}
-
-type Reader struct {
-	name string
-}
-
-func NewReader(name string) *Reader {
-	return &Reader{
-		name: name,
-	}
-}
-
-func (r *Reader) Update(s *Subject) {
-	fmt.Printf("%s receive %s\n", r.name, s.context)
+func (o *IObserver2) Update(msg string){
+	fmt.Printf("Observice2")
 }
