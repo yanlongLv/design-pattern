@@ -6,14 +6,14 @@ type Iterator interface {
 	CurrentItem() interface{}
 }
 
-type ArrayList []int
+type ArrayInt []int
 
 type ArrayListIterator struct {
-	arrayList ArrayList
+	arrayList ArrayInt
 	index     int
 }
 
-func (a ArrayList) Iterator() Iterator {
+func (a ArrayInt) Iterator() Iterator {
 	return &ArrayListIterator{arrayList: a, index: 0}
 }
 
